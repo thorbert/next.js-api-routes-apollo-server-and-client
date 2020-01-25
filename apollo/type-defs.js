@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import gql from "graphql-tag";
 
 export const typeDefs = gql`
   type User {
@@ -7,7 +7,15 @@ export const typeDefs = gql`
     status: String!
   }
 
+  type GithubUser {
+    id: ID!
+    name: String!
+    html_url: String!
+    status: String!
+  }
+
   type Query {
     viewer: User
+    git_user(id: ID!): GithubUser
   }
-`
+`;
