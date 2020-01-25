@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/react-hooks";
 
 const Query = gql`
   query Query {
-    git_user(id: "lukethacoder2") {
+    git_user(id: "lukethacoder") {
       id
       name
       html_url
