@@ -126,7 +126,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var apollo_client__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(apollo_client__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var apollo_cache_inmemory__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! apollo-cache-inmemory */ "apollo-cache-inmemory");
 /* harmony import */ var apollo_cache_inmemory__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(apollo_cache_inmemory__WEBPACK_IMPORTED_MODULE_4__);
-var _jsxFileName = "C:\\Users\\lukes\\Documents\\Github\\next.js-api-routes-apollo-server-and-client\\apollo\\client.js";
+var _jsxFileName = "C:\\Github\\next.js-api-routes-apollo-server-and-client\\apollo\\client.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -329,31 +329,38 @@ __webpack_require__.r(__webpack_exports__);
 // Hold all endpoints data here
 
 
-const GITHUB_BASE_API = "https://api.github.com";
+const GITHUB_BASE_API = 'https://api.github.com';
 const resolvers = {
   Query: {
-    viewer(_parent, _args, _context, _info) {
-      return {
-        id: 1,
-        name: "John Smith 2",
-        status: ""
-      };
+    gitUsers: async (parent, args, context, info) => {
+      return [{
+        id: id,
+        name: 'from graphql test',
+        html_url: `${GITHUB_BASE_API} from graphql test`,
+        status: 'from graphql test'
+      }];
     },
-
-    git_user: async (parent, args, context, info) => {
+    gitUser: async (parent, args, context, info) => {
       let {
         id
       } = args;
-      return node_fetch__WEBPACK_IMPORTED_MODULE_1___default()(`${GITHUB_BASE_API}/users/${id}`).then(res => res.json()).then(git_data => {
+      console.log('args => ', args); // return {
+      //   id: id,
+      //   name: 'from graphql test',
+      //   html_url: `${GITHUB_BASE_API} from graphql test`,
+      //   status: 'from graphql test',
+      // }
+
+      return await node_fetch__WEBPACK_IMPORTED_MODULE_1___default()(`${GITHUB_BASE_API}/users/${id}`).then(res => res.json()).then(git_data => {
         if (git_data.id) {
           return {
             id: git_data.id,
             name: git_data.login,
             html_url: git_data.html_url,
-            status: "wip"
+            status: 'wip'
           };
         } else {
-          console.error("git_data => ", git_data);
+          // console.error('git_data => ', git_data)
           return {
             id: 404,
             name: git_data.message,
@@ -362,12 +369,11 @@ const resolvers = {
           };
         }
       }).catch(err => {
-        console.log("err => ", JSON.stringify(err));
         return {
           id: 404,
-          name: err.message,
-          html_url: "",
-          status: err.message
+          name: 'error',
+          html_url: '',
+          status: JSON.stringify(err)
         };
       });
     }
@@ -421,15 +427,15 @@ const typeDefs = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a`
   }
 
   type GithubUser {
-    id: ID!
+    id: String!
     name: String!
     html_url: String!
     status: String!
   }
 
   type Query {
-    viewer: User
-    git_user(id: ID!): GithubUser
+    gitUsers: [GithubUser]!
+    gitUser(id: String!): GithubUser
   }
 `;
 
@@ -2124,16 +2130,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @apollo/react-hooks */ "@apollo/react-hooks");
 /* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_4__);
-var _jsxFileName = "C:\\Users\\lukes\\Documents\\Github\\next.js-api-routes-apollo-server-and-client\\pages\\index.js";
+var _jsxFileName = "C:\\Github\\next.js-api-routes-apollo-server-and-client\\pages\\index.js";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
 
 
-const Query = graphql_tag__WEBPACK_IMPORTED_MODULE_2___default.a`
-  query Query {
-    git_user(id: "lukethacoder2") {
+const USER_NAME = 'lukethacoder';
+const GET_GITHUB_USER_BY_NAME = graphql_tag__WEBPACK_IMPORTED_MODULE_2___default.a`
+  query getGithubUserByName($user_name: String!) {
+    gitUser(id: $user_name) {
       id
       name
       html_url
@@ -2143,48 +2150,50 @@ const Query = graphql_tag__WEBPACK_IMPORTED_MODULE_2___default.a`
 `;
 
 const Index = () => {
-  const git_data = Object(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_4__["useQuery"])(Query);
-  console.log("git_data => ", git_data);
   const {
-    data: {
-      git_user
+    loading,
+    data,
+    error
+  } = Object(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_4__["useQuery"])(GET_GITHUB_USER_BY_NAME, {
+    variables: {
+      user_name: USER_NAME
     }
-  } = Object(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_4__["useQuery"])(Query); // const {
-  //   data: { viewer }
-  // } = useQuery(Query);
-
-  if (git_user) {
-    return __jsx("div", {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 29
-      },
-      __self: undefined
-    }, "Github user:", " ", __jsx("a", {
-      href: git_user.html_url,
-      target: "_blank",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 31
-      },
-      __self: undefined
-    }, git_user.name), " ", "and you're ", git_user.status, " goto", " ", __jsx(next_link__WEBPACK_IMPORTED_MODULE_3___default.a, {
-      href: "/about",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 35
-      },
-      __self: undefined
-    }, __jsx("a", {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 36
-      },
-      __self: undefined
-    }, "static")), " ", "page.");
-  }
-
-  return null;
+  });
+  if (loading) return __jsx("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 24
+    },
+    __self: undefined
+  }, "Loading...");
+  if (error) return __jsx("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 25
+    },
+    __self: undefined
+  }, "Error :(");
+  return __jsx("div", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 28
+    },
+    __self: undefined
+  }, __jsx("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 29
+    },
+    __self: undefined
+  }, "Fetched data from Apollo server:", ' ', data && __jsx("a", {
+    id: data.gitUser ? data.gitUser.id : 'no id',
+    href: data.gitUser ? data.gitUser.html_url : 'https://github.com',
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 32
+    },
+    __self: undefined
+  }, data.gitUser ? data.gitUser.name : 'no name')));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(_apollo_client__WEBPACK_IMPORTED_MODULE_1__["withApollo"])(Index));
@@ -2198,7 +2207,7 @@ const Index = () => {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\lukes\Documents\Github\next.js-api-routes-apollo-server-and-client\pages\index.js */"./pages/index.js");
+module.exports = __webpack_require__(/*! C:\Github\next.js-api-routes-apollo-server-and-client\pages\index.js */"./pages/index.js");
 
 
 /***/ }),

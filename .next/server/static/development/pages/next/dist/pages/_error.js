@@ -565,7 +565,7 @@ var styles = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\lukes\Documents\Github\next.js-api-routes-apollo-server-and-client\node_modules\next\dist\pages\_error.js */"./node_modules/next/dist/pages/_error.js");
+module.exports = __webpack_require__(/*! C:\Github\next.js-api-routes-apollo-server-and-client\node_modules\next\dist\pages\_error.js */"./node_modules/next/dist/pages/_error.js");
 
 
 /***/ }),

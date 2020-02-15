@@ -110,31 +110,38 @@ __webpack_require__.r(__webpack_exports__);
 // Hold all endpoints data here
 
 
-const GITHUB_BASE_API = "https://api.github.com";
+const GITHUB_BASE_API = 'https://api.github.com';
 const resolvers = {
   Query: {
-    viewer(_parent, _args, _context, _info) {
-      return {
-        id: 1,
-        name: "John Smith 2",
-        status: ""
-      };
+    gitUsers: async (parent, args, context, info) => {
+      return [{
+        id: id,
+        name: 'from graphql test',
+        html_url: `${GITHUB_BASE_API} from graphql test`,
+        status: 'from graphql test'
+      }];
     },
-
-    git_user: async (parent, args, context, info) => {
+    gitUser: async (parent, args, context, info) => {
       let {
         id
       } = args;
-      return node_fetch__WEBPACK_IMPORTED_MODULE_1___default()(`${GITHUB_BASE_API}/users/${id}`).then(res => res.json()).then(git_data => {
+      console.log('args => ', args); // return {
+      //   id: id,
+      //   name: 'from graphql test',
+      //   html_url: `${GITHUB_BASE_API} from graphql test`,
+      //   status: 'from graphql test',
+      // }
+
+      return await node_fetch__WEBPACK_IMPORTED_MODULE_1___default()(`${GITHUB_BASE_API}/users/${id}`).then(res => res.json()).then(git_data => {
         if (git_data.id) {
           return {
             id: git_data.id,
             name: git_data.login,
             html_url: git_data.html_url,
-            status: "wip"
+            status: 'wip'
           };
         } else {
-          console.error("git_data => ", git_data);
+          // console.error('git_data => ', git_data)
           return {
             id: 404,
             name: git_data.message,
@@ -143,12 +150,11 @@ const resolvers = {
           };
         }
       }).catch(err => {
-        console.log("err => ", JSON.stringify(err));
         return {
           id: 404,
-          name: err.message,
-          html_url: "",
-          status: err.message
+          name: 'error',
+          html_url: '',
+          status: JSON.stringify(err)
         };
       });
     }
@@ -202,15 +208,15 @@ const typeDefs = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a`
   }
 
   type GithubUser {
-    id: ID!
+    id: String!
     name: String!
     html_url: String!
     status: String!
   }
 
   type Query {
-    viewer: User
-    git_user(id: ID!): GithubUser
+    gitUsers: [GithubUser]!
+    gitUser(id: String!): GithubUser
   }
 `;
 
@@ -252,7 +258,7 @@ const config = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\lukes\Documents\Github\next.js-api-routes-apollo-server-and-client\pages\api\graphql.js */"./pages/api/graphql.js");
+module.exports = __webpack_require__(/*! C:\Github\next.js-api-routes-apollo-server-and-client\pages\api\graphql.js */"./pages/api/graphql.js");
 
 
 /***/ }),

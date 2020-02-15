@@ -1,11 +1,13 @@
-import { withApollo } from "../apollo/client";
-import gql from "graphql-tag";
-import Link from "next/link";
-import { useQuery } from "@apollo/react-hooks";
+import { withApollo } from '../apollo/client';
+import gql from 'graphql-tag';
+import Link from 'next/link';
+import { useQuery } from '@apollo/react-hooks';
 
-const Query = gql`
-  query Query {
-    git_user(id: "lukethacoder") {
+const USER_NAME = 'lukethacoder';
+
+const GET_GITHUB_USER_BY_NAME = gql`
+  query getGithubUserByName($user_name: String!) {
+    gitUser(id: $user_name) {
       id
       name
       html_url
@@ -15,32 +17,28 @@ const Query = gql`
 `;
 
 const Index = () => {
-  const git_data = useQuery(Query);
-  console.log("git_data => ", git_data);
-  const {
-    data: { git_user }
-  } = useQuery(Query);
-  // const {
-  //   data: { viewer }
-  // } = useQuery(Query);
+  const { loading, data, error } = useQuery(GET_GITHUB_USER_BY_NAME, {
+    variables: { user_name: USER_NAME },
+  });
 
-  if (git_user) {
-    return (
-      <div>
-        Github user:{" "}
-        <a href={git_user.html_url} target="_blank">
-          {git_user.name}
-        </a>{" "}
-        and you're {git_user.status} goto{" "}
-        <Link href="/about">
-          <a>static</a>
-        </Link>{" "}
-        page.
-      </div>
-    );
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
 
-  return null;
+  return (
+    <div>
+      <p>
+        Fetched data from Apollo server:{' '}
+        {data && (
+          <a
+            id={data.gitUser ? data.gitUser.id : 'no id'}
+            href={data.gitUser ? data.gitUser.html_url : 'https://github.com'}
+          >
+            {data.gitUser ? data.gitUser.name : 'no name'}
+          </a>
+        )}
+      </p>
+    </div>
+  );
 };
 
 export default withApollo(Index);

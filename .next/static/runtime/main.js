@@ -4797,7 +4797,7 @@ function connect(options) {
       error.name = err.name;
       error.stack = err.stack; // __NEXT_DIST_DIR is provided by webpack
 
-      (0, _sourceMapSupport.rewriteStacktrace)(error, "C:\\Users\\lukes\\Documents\\Github\\next.js-api-routes-apollo-server-and-client\\.next");
+      (0, _sourceMapSupport.rewriteStacktrace)(error, "C:\\Github\\next.js-api-routes-apollo-server-and-client\\.next");
       return error;
     }
   };

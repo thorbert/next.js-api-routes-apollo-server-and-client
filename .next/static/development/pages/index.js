@@ -44,7 +44,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _jsxFileName = "C:\\Users\\lukes\\Documents\\Github\\next.js-api-routes-apollo-server-and-client\\apollo\\client.js";
+var _jsxFileName = "C:\\Github\\next.js-api-routes-apollo-server-and-client\\apollo\\client.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement;
 
 function ownKeys(object, enumerableOnly) { var keys = _babel_runtime_corejs2_core_js_object_keys__WEBPACK_IMPORTED_MODULE_5___default()(object); if (_babel_runtime_corejs2_core_js_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_4___default.a) { var symbols = _babel_runtime_corejs2_core_js_object_get_own_property_symbols__WEBPACK_IMPORTED_MODULE_4___default()(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return _babel_runtime_corejs2_core_js_object_get_own_property_descriptor__WEBPACK_IMPORTED_MODULE_3___default()(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -16608,10 +16608,10 @@ var assign=Object.assign.bind(Object);function g(){return assign;}Object.defineP
 
 /***/ }),
 
-/***/ "./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=C%3A%5CUsers%5Clukes%5CDocuments%5CGithub%5Cnext.js-api-routes-apollo-server-and-client%5Cpages%5Cindex.js!./":
-/*!***********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=C%3A%5CUsers%5Clukes%5CDocuments%5CGithub%5Cnext.js-api-routes-apollo-server-and-client%5Cpages%5Cindex.js ***!
-  \***********************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=C%3A%5CGithub%5Cnext.js-api-routes-apollo-server-and-client%5Cpages%5Cindex.js!./":
+/*!*******************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=C%3A%5CGithub%5Cnext.js-api-routes-apollo-server-and-client%5Cpages%5Cindex.js ***!
+  \*******************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24134,12 +24134,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _apollo_react_hooks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @apollo/react-hooks */ "./node_modules/@apollo/react-hooks/lib/react-hooks.esm.js");
 
-var _jsxFileName = "C:\\Users\\lukes\\Documents\\Github\\next.js-api-routes-apollo-server-and-client\\pages\\index.js";
+var _jsxFileName = "C:\\Github\\next.js-api-routes-apollo-server-and-client\\pages\\index.js";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
 
 function _templateObject() {
-  var data = Object(_babel_runtime_corejs2_helpers_esm_taggedTemplateLiteral__WEBPACK_IMPORTED_MODULE_0__["default"])(["\n  query Query {\n    git_user(id: \"lukethacoder2\") {\n      id\n      name\n      html_url\n      status\n    }\n  }\n"]);
+  var data = Object(_babel_runtime_corejs2_helpers_esm_taggedTemplateLiteral__WEBPACK_IMPORTED_MODULE_0__["default"])(["\n  query getGithubUserByName($user_name: String!) {\n    gitUser(id: $user_name) {\n      id\n      name\n      html_url\n      status\n    }\n  }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -24152,50 +24152,54 @@ function _templateObject() {
 
 
 
-var Query = graphql_tag__WEBPACK_IMPORTED_MODULE_3___default()(_templateObject());
+var USER_NAME = 'lukethacoder';
+var GET_GITHUB_USER_BY_NAME = graphql_tag__WEBPACK_IMPORTED_MODULE_3___default()(_templateObject());
 
 var Index = function Index() {
-  var git_data = Object(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_5__["useQuery"])(Query);
-  console.log("git_data => ", git_data);
+  var _useQuery = Object(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_5__["useQuery"])(GET_GITHUB_USER_BY_NAME, {
+    variables: {
+      user_name: USER_NAME
+    }
+  }),
+      loading = _useQuery.loading,
+      data = _useQuery.data,
+      error = _useQuery.error;
 
-  var _useQuery = Object(_apollo_react_hooks__WEBPACK_IMPORTED_MODULE_5__["useQuery"])(Query),
-      git_user = _useQuery.data.git_user; // const {
-  //   data: { viewer }
-  // } = useQuery(Query);
-
-
-  if (git_user) {
-    return __jsx("div", {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 29
-      },
-      __self: this
-    }, "Github user:", " ", __jsx("a", {
-      href: git_user.html_url,
-      target: "_blank",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 31
-      },
-      __self: this
-    }, git_user.name), " ", "and you're ", git_user.status, " goto", " ", __jsx(next_link__WEBPACK_IMPORTED_MODULE_4___default.a, {
-      href: "/about",
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 35
-      },
-      __self: this
-    }, __jsx("a", {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 36
-      },
-      __self: this
-    }, "static")), " ", "page.");
-  }
-
-  return null;
+  if (loading) return __jsx("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 24
+    },
+    __self: this
+  }, "Loading...");
+  if (error) return __jsx("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 25
+    },
+    __self: this
+  }, "Error :(");
+  return __jsx("div", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 28
+    },
+    __self: this
+  }, __jsx("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 29
+    },
+    __self: this
+  }, "Fetched data from Apollo server:", ' ', data && __jsx("a", {
+    id: data.gitUser ? data.gitUser.id : 'no id',
+    href: data.gitUser ? data.gitUser.html_url : 'https://github.com',
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 32
+    },
+    __self: this
+  }, data.gitUser ? data.gitUser.name : 'no name')));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(_apollo_client__WEBPACK_IMPORTED_MODULE_2__["withApollo"])(Index));
@@ -24203,13 +24207,13 @@ var Index = function Index() {
 /***/ }),
 
 /***/ 1:
-/*!***************************************************************************************************************************************************************************!*\
-  !*** multi next-client-pages-loader?page=%2F&absolutePagePath=C%3A%5CUsers%5Clukes%5CDocuments%5CGithub%5Cnext.js-api-routes-apollo-server-and-client%5Cpages%5Cindex.js ***!
-  \***************************************************************************************************************************************************************************/
+/*!***********************************************************************************************************************************************!*\
+  !*** multi next-client-pages-loader?page=%2F&absolutePagePath=C%3A%5CGithub%5Cnext.js-api-routes-apollo-server-and-client%5Cpages%5Cindex.js ***!
+  \***********************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! next-client-pages-loader?page=%2F&absolutePagePath=C%3A%5CUsers%5Clukes%5CDocuments%5CGithub%5Cnext.js-api-routes-apollo-server-and-client%5Cpages%5Cindex.js! */"./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=C%3A%5CUsers%5Clukes%5CDocuments%5CGithub%5Cnext.js-api-routes-apollo-server-and-client%5Cpages%5Cindex.js!./");
+module.exports = __webpack_require__(/*! next-client-pages-loader?page=%2F&absolutePagePath=C%3A%5CGithub%5Cnext.js-api-routes-apollo-server-and-client%5Cpages%5Cindex.js! */"./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=C%3A%5CGithub%5Cnext.js-api-routes-apollo-server-and-client%5Cpages%5Cindex.js!./");
 
 
 /***/ }),
